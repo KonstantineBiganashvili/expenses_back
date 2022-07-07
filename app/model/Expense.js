@@ -6,7 +6,7 @@ const Expense = sequelize.define('expenses', {
         type: DataTypes.STRING,
     },
     cost: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
     },
 });
 
