@@ -42,10 +42,6 @@ module.exports.editExpense = async (req, res) => {
     const { id } = req.params;
     const errorsArray = [];
 
-    const expense = await Expense.findByPk(id);
-    if (!expense)
-        return res.status(404).send({ message: 'Expense does not exist!' });
-
     if (!name && !cost) {
         errorsArray.push('You must change at least one field!');
     } else {
@@ -63,8 +59,9 @@ module.exports.editExpense = async (req, res) => {
         return res.status(422).send({ message: errorsArray });
 
     try {
-        await Expense.update(req.body, { where: { id } });
-        return await this.getExpense(req, res);
+        const change = await Expense.update(req.body, { where: { id } });
+        if (change[0] === 1) return await this.getExpense(req, res);
+        return res.status(404).send({ message: 'Expense does not exist!' });
     } catch (error) {
         return res.status(422).send({ answer: error });
     }
