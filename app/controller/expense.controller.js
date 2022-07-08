@@ -63,7 +63,7 @@ module.exports.editExpense = async (req, res) => {
         return res.status(422).send({ message: errorsArray });
 
     try {
-        await Expense.update({ name, cost }, { where: { id } });
+        await Expense.update(req.body, { where: { id } });
         return await this.getExpense(req, res);
     } catch (error) {
         return res.status(422).send({ answer: error });
