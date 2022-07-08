@@ -71,7 +71,7 @@ module.exports.deleteExpenseById = async (req, res) => {
     const { id } = req.params;
 
     if (!id.trim())
-        return res.status(422).send({ answer: 'Expense does not exist!' });
+        return res.status(422).send({ answer: 'Invalid ID has been passed!' });
 
     try {
         const remove = await Expense.destroy({ where: { id } });
