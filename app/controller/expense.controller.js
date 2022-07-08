@@ -24,6 +24,6 @@ module.exports.createExpense = async (req, res) => {
         });
         return newExpense && (await this.getExpense(req, res));
     } catch (error) {
-        return res.send(error);
+        return res.status(422).send(error);
     }
 };
