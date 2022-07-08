@@ -5,7 +5,7 @@ module.exports.getExpense = async (req, res) => {
         const expenses = await Expense.findAll();
         res.send(expenses);
     } catch (error) {
-        res.status(422).send({ errMsg: error });
+        res.status(422).send({ answer: error });
     }
 };
 
@@ -17,13 +17,13 @@ module.exports.createExpense = async (req, res) => {
         if (!name) errorsArray.push('Name field does not exist!');
         if (!cost) errorsArray.push('Cost field does not exist!');
         if (errorsArray.length)
-            return res.status(422).send({ errorMsg: errorsArray });
+            return res.status(422).send({ answer: errorsArray });
     } else {
         if (!name.trim()) errorsArray.push('Name required!');
         if (typeof cost !== 'number')
             errorsArray.push('Cost has to be a number!');
         if (errorsArray.length)
-            return res.status(422).send({ errorMsg: errorsArray });
+            return res.status(422).send({ answer: errorsArray });
     }
 
     try {
