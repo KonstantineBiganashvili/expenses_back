@@ -33,11 +33,11 @@ module.exports.createExpense = async (req, res) => {
         });
         return newExpense && (await this.getExpense(req, res));
     } catch (error) {
-        return res.status(422).send({ error });
+        return res.status(422).send({ answer: error });
     }
 };
 
-module.exports.editExpense = async (req, res) => {
+module.exports.editExpenseById = async (req, res) => {
     const { name, cost } = req.body;
     const { id } = req.params;
     const errorsArray = [];
@@ -56,12 +56,12 @@ module.exports.editExpense = async (req, res) => {
     }
 
     if (errorsArray.length)
-        return res.status(422).send({ message: errorsArray });
+        return res.status(422).send({ answer: errorsArray });
 
     try {
-        const change = await Expense.update(req.body, { where: { id } });
-        if (change[0] === 1) return await this.getExpense(req, res);
-        return res.status(404).send({ message: 'Expense does not exist!' });
+        const [change] = await Expense.update(req.body, { where: { id } });
+        if (change) return await this.getExpense(req, res);
+        return res.status(404).send({ answer: 'Expense does not exist!' });
     } catch (error) {
         return res.status(422).send({ answer: error });
     }
