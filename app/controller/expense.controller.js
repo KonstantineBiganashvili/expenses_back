@@ -70,6 +70,9 @@ module.exports.editExpenseById = async (req, res) => {
 module.exports.deleteExpenseById = async (req, res) => {
     const { id } = req.params;
 
+    if (!id.trim())
+        return res.status(422).send({ answer: 'Expense does not exist!' });
+
     try {
         const remove = await Expense.destroy({ where: { id } });
         if (remove) return await this.getExpense(req, res);
