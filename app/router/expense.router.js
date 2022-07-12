@@ -3,9 +3,18 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controller/expense.controller');
 
-router.get('/expenses', controller.getExpense);
-router.post('/expenses', controller.createExpense);
-router.patch('/expenses/:id', controller.editExpenseById);
-router.delete('/expenses/:id', controller.deleteExpenseById);
+const app = express();
+
+router
+    .route('/expenses')
+    .get(controller.getExpense)
+    .post(controller.createExpense);
+
+router
+    .route('/expenses/:id')
+    .patch(controller.editExpenseById)
+    .delete(controller.deleteExpenseById);
+
+app.use(router);
 
 module.exports = router;
