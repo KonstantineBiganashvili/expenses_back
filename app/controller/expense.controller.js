@@ -41,17 +41,20 @@ module.exports.editExpenseById = async (req, res) => {
     const { name, cost } = req.body;
     const { id } = req.params;
     const errorsArray = [];
+    const validField = {};
 
     if (!name && !cost) {
         errorsArray.push('You must change at least one field!');
     } else {
         if (name) {
             if (!name.trim()) errorsArray.push('Name must not be empty!');
+            else validField.name = name;
         }
 
         if (cost) {
             if (typeof cost !== 'number')
                 errorsArray.push('Cost must be a number!');
+            else validField.cost = cost;
         }
     }
 
@@ -59,7 +62,7 @@ module.exports.editExpenseById = async (req, res) => {
         return res.status(422).send({ answer: errorsArray });
 
     try {
-        const [change] = await Expense.update(req.body, { where: { id } });
+        const [change] = await Expense.update(validField, { where: { id } });
         if (change) return await this.getExpense(req, res);
         return res.status(404).send({ answer: 'Expense does not exist!' });
     } catch (error) {
